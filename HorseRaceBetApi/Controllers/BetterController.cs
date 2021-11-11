@@ -34,10 +34,10 @@ namespace HorseRaceBetApi.Controllers
             return Ok(better);
         }
 
-        [HttpGet("{id}/Horse")]
-        public async Task<IActionResult> GetBettersByIdAsyncint(int id)
+        [HttpGet("FilterByHorseId/{horseId}")]
+        public async Task<IActionResult> GetBettersByHorseIdAsync(int horseId)
         {
-            return Ok(await _betterService.GetBettersByHorseAsync(id));
+            return Ok(await _betterService.GetBettersByHorseIdAsync(horseId));
         }
 
         [HttpPost]

@@ -28,7 +28,7 @@ namespace HorseRaceBetApi.Repositories
         {
             return await _context.Betters.FirstOrDefaultAsync(b => b.Id == id);
         }
-        public async Task UpdateBetter(Better better)
+        public async Task UpdateBetterAsync(Better better)
         {
             _context.Update(better);
             await _context.SaveChangesAsync();
@@ -38,7 +38,7 @@ namespace HorseRaceBetApi.Repositories
             _context.Remove(better);
             await _context.SaveChangesAsync();
         }
-        public async Task<List<Better>> GetAllBettersByHorseAsync(int horseId)
+        public async Task<List<Better>> GetAllBettersByHorseIdAsync(int horseId)
         {
             return await _context.Betters.Include(h => h.Horse).Where(a => a.HorseId == horseId).ToListAsync();
         }

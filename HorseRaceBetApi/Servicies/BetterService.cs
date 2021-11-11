@@ -21,15 +21,24 @@ namespace HorseRaceBetApi.Servicies
 
             return betterEntities.ToList();
         }
-        public async Task<List<Better>> GetBettersByHorseAsync(int horseId)
+        public async Task<List<Better>> GetBettersByHorseIdAsync(int horseId)
         {
-            var betterEntities = await _betterRepository.GetAllBettersByHorseAsync(horseId);
+            var betterEntities = await _betterRepository.GetAllBettersAsync();
+            if (horseId != 0)
+            {
+                return await _betterRepository.GetAllBettersByHorseIdAsync(horseId);
+            }
 
             return betterEntities.ToList();
         }
         public async Task<Better> GetByIdAsync(int id)
         {
-            return await _betterRepository.GetByIdAsync(id);
+            var better = await _betterRepository.GetByIdAsync(id);
+            if (better == null)
+            {
+                throw new ArgumentException("Record not found");
+            }
+            return better;
         }
         public async Task<int> AddAsync(Better better)
         {
@@ -47,6 +56,11 @@ namespace HorseRaceBetApi.Servicies
         }
         public async Task UpdateBetterAsync(Better better)
         {
+            //var entity1 = await await _betterRepository.GetByIdAsync(entity1.id);
+            //if (entity1 == null)
+            //{
+            //    throw new ArgumentException("Better not found");
+            //}
             var entity = new Better()
             {
                 Id = better.Id,
@@ -55,11 +69,15 @@ namespace HorseRaceBetApi.Servicies
                 Bet = better.Bet,
                 HorseId = better.HorseId
             };
+            if (entity == null)
+            {
+                throw new ArgumentException("Better not found");
+            }
             if (better.HorseId != better.HorseId)
             {
                 throw new ArgumentException("Horse not found");
             }
-            await _betterRepository.UpdateBetter(entity);
+            await _betterRepository.UpdateBetterAsync(entity);
         }
         public async Task DeleteAsync(int id)
         {
